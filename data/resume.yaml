@@ -1,133 +1,72 @@
-# Replace all placeholder values with your actual information
-# Use this template to create your personalized resume data
-
-# Basic Information Section
 basic:
-  name: "[Your Full Name]"
+  name: "John Doe"
   address:
-    - "[Your Address Line 1]"
-    - "[City, State ZIP]"
+    - "123 Main Street"
+    - "San Francisco, CA 94105"
   contact:
-    email: "[your.email@domain.com]"
-    phone: "[+1-XXX-XXX-XXXX]"
+    email: "john.doe@email.com"
+    phone: "+1 (555) 123-4567"
   websites:
-    - text: "[yourprofile]"
-      url: "[https://linkedin.com/in/yourprofile]"
-      icon: "linkedin"
-    - text: "[YourUsername]"
-      url: "[https://github.com/yourusername]"
-      icon: "github"
-    - text: "[Portfolio]"
-      url: "[https://yourportfolio.com]"
-      icon: "web"
+    - text: "LinkedIn"
+      url: "https://linkedin.com/in/johndoe"
+    - text: "GitHub"
+      url: "https://github.com/johndoe"
+    - text: "Portfolio"
+      url: "https://johndoe.dev"
 
-# Optional summary section
-summary: "[Brief professional summary highlighting your key strengths and career objectives]"
+summary: "Experienced software engineer with 5+ years developing scalable web applications and leading cross-functional teams."
 
-# Education Section
+experiences:
+  - company: "Tech Solutions Inc."
+    titles:
+      - name: "Senior Software Engineer"
+        startdate: "2021"
+        enddate: "Present"
+    highlights:
+      - "Led development of microservices architecture serving 1M+ daily users"
+      - "Mentored 3 junior developers and improved team code review process"
+      - "Reduced application response time by 40% through database optimization"
+
+  - company: "StartupCorp"
+    titles:
+      - name: "Full Stack Developer"
+        startdate: "2018"
+        enddate: "2021"
+    highlights:
+      - "Developed MVP for B2B SaaS platform from concept to launch"
+      - "Built responsive frontend using React and modern CSS frameworks"
+      - "Designed and implemented RESTful APIs with comprehensive documentation"
+
 education:
-  - school: "[University Name]"
+  - school: "University of California, Berkeley"
     degrees:
-      - names: ["[Degree Type]", "[Field of Study]"]
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-        gpa: 3.5
+      - names: ["Bachelor of Science in Computer Science"]
+        startdate: "2014"
+        enddate: "2018"
+        gpa: 3.7
     achievements:
-      - "[Relevant Coursework]"
-      - "[Academic Achievement or Honor]"
+      - "Data Structures, Algorithms, Software Engineering, Database Systems"
 
-# Skills Section
+projects:
+  - name: "E-commerce Platform"
+    description: "Built a complete e-commerce platform with user authentication, payment processing, and inventory management using Python, Django, and PostgreSQL"
+    technologies: ["Python", "Django", "PostgreSQL", "React"]
+
+  - name: "Data Analytics Dashboard"
+    description: "Interactive dashboard for business intelligence and data visualization using Python, Pandas, and Streamlit"
+    technologies: ["Python", "Pandas", "Plotly", "Streamlit"]
+
 skills:
   - category: "Programming Languages"
-    skills: ["[Programming Language 1]", "[Programming Language 2]", "[Language 3]"]
-  - category: "Frameworks & Libraries"
-    skills: ["[Framework 1]", "[Framework 2]", "[Framework 3]"]
+    skills: ["Python", "JavaScript", "TypeScript", "Java"]
+  - category: "Web Frameworks"
+    skills: ["Django", "Flask", "React", "Node.js"]
+  - category: "Databases"
+    skills: ["PostgreSQL", "MongoDB", "Redis"]
   - category: "Tools & Technologies"
-    skills: ["[Tool 1]", "[Tool 2]", "[Tool 3]", "[Tool 4]"]
-  - category: "Technical Proficiency"
-    skills: ["[Skill Area 1]", "[Skill Area 2]", "[Skill Area 3]"]
+    skills: ["Docker", "AWS", "Git", "Linux"]
 
-# Experience Section
-experiences:
-  - company: "[Company Name 1]"
-    titles:
-      - name: "[Job Title]"
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-    highlights:
-      - "[Achievement or responsibility that demonstrates impact]"
-      - "[Quantified result showing your contribution]"
-      - "[Technical skill or leadership example]"
-    unedited:
-      - "[Raw achievement for AI processing]"
-
-  - company: "[Company Name 2]"
-    titles:
-      - name: "[Job Title]"
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-    highlights:
-      - "[Another achievement with specific metrics]"
-      - "[Problem you solved and the outcome]"
-      - "[Technology or process improvement you implemented]"
-
-  - company: "[Company Name 3]"
-    titles:
-      - name: "[Job Title] (Intern)"
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-    highlights:
-      - "[Internship achievement or project completed]"
-      - "[Skills developed or technologies learned]"
-
-  - company: "[Company Name 4]"
-    titles:
-      - name: "[Job Title] (Intern)"
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-    highlights:
-      - "[Another internship experience or project]"
-      - "[Collaboration or teamwork example]"
-
-  - company: "[Company Name 5]"
-    titles:
-      - name: "[Job Title] (Intern)"
-        startdate: "[Start Date]"
-        enddate: "[End Date]"
-    highlights:
-      - "[Final internship or early career experience]"
-      - "[Innovation or process improvement example]"
-
-# Projects Section
-projects:
-  - name: "[Project Name 1]"
-    subtitle: "[Brief Project Description]"
-    url: "[https://project-url.com]"
-    description: "[Detailed description of the project, technologies used, and impact. Explain the problem solved, your approach, and the results achieved.]"
-    technologies: ["[Technology 1]", "[Technology 2]", "[Technology 3]"]
-    highlights:
-      - "[Key achievement or feature implemented]"
-      - "[Impact or result of the project]"
-
-  - name: "[Project Name 2]"
-    subtitle: "[Brief Project Description]"
-    url: "[https://project-url.com]"
-    description: "[Another project description with focus on technical implementation, challenges overcome, and learning outcomes.]"
-    technologies: ["[Technology A]", "[Technology B]", "[Technology C]"]
-    highlights:
-      - "[Technical challenge overcome]"
-      - "[Learning outcome or skill developed]"
-
-# Research Experience Section
 research:
-  - title: "[Research Project Title 1]"
-    description: "[Description of research methodology, findings, and applications. Include any publications, presentations, or practical implementations.]"
-    publication_date: "[Publication Date]"
-    collaborators: ["[Collaborator 1]", "[Collaborator 2]"]
-    keywords: ["[Keyword 1]", "[Keyword 2]", "[Keyword 3]"]
-
-  - title: "[Research Project Title 2]"
-    description: "[Another research project with focus on innovation, collaboration, and real-world impact. Mention any tools, frameworks, or methodologies used.]"
-    publication_date: "[Publication Date]"
-    collaborators: ["[Collaborator A]", "[Collaborator B]"]
-    keywords: ["[Research Area 1]", "[Research Area 2]", "[Methodology]"]
+  - title: "Machine Learning for Web Performance Optimization"
+    description: "Research on using ML algorithms to predict and optimize web application performance, published in IEEE conference proceedings"
+    publication_date: "2022"
