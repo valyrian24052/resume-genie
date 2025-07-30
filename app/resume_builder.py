@@ -31,26 +31,7 @@ class ResumeBuilder:
     
     def load_resume(self) -> ResumeData:
         """Load resume data from YAML file."""
-        # For simple variable replacement, we don't need complex validation
-        # Just return a minimal ResumeData object since we load YAML directly in LaTeX generator
-        from models.resume_data import ResumeData, BasicInfo, ContactInfo
-        
-        # Create a minimal ResumeData object to satisfy the interface
-        basic = BasicInfo(
-            name="Placeholder",
-            address=["Placeholder"],
-            contact=ContactInfo(email="placeholder@email.com", phone="000-000-0000"),
-            websites=[]
-        )
-        
-        return ResumeData(
-            basic=basic,
-            summary=None,
-            experiences=[],
-            education=[],
-            projects=[],
-            skills=[]
-        )
+        return self.yaml_processor.load_resume(str(self.resume_file))
     
     def customize_resume(self, job_post: str, api_key: str) -> ResumeData:
         """Customize resume for a job posting using AI.

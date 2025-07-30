@@ -114,8 +114,9 @@ class SimpleTemplateEngine:
         skills_section = ""
         if resume_data.skills:
             for skill_cat in resume_data.skills:
-                skills_list = ', '.join(skill_cat.skills)
-                skills_section += f"    \\resumeSubItem{{{skill_cat.category}}}{{{skills_list}}}\n"
+                safe_category = self._escape_latex(skill_cat.category)
+                skills_list = ', '.join([self._escape_latex(skill) for skill in skill_cat.skills])
+                skills_section += f"    \\resumeSubItem{{{safe_category}}}{{{skills_list}}}\n"
         template_vars['SKILLS_SECTION'] = skills_section
         
         # Experience section
@@ -174,21 +175,22 @@ class SimpleTemplateEngine:
             return ""
         
         # LaTeX special characters that need escaping
-        replacements = {
-            '&': '\\&',
-            '%': '\\%',
-            '$': '\\$',
-            '#': '\\#',
-            '^': '\\textasciicircum{}',
-            '_': '\\_',
-            '{': '\\{',
-            '}': '\\}',
-            '~': '\\textasciitilde{}',
-            '\\': '\\textbackslash{}'
-        }
+        # Order matters - escape backslash first to avoid double-escaping
+        replacements = [
+            ('\\', '\\textbackslash{}'),
+            ('&', '\\&'),
+            ('%', '\\%'),
+            ('$', '\\$'),
+            ('#', '\\#'),
+            ('^', '\\textasciicircum{}'),
+            ('_', '\\_'),
+            ('{', '\\{'),
+            ('}', '\\}'),
+            ('~', '\\textasciitilde{}')
+        ]
         
         result = text
-        for char, replacement in replacements.items():
+        for char, replacement in replacements:
             result = result.replace(char, replacement)
         
         return result

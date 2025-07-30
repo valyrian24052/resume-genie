@@ -113,11 +113,11 @@ class LaTeXGenerator:
         escaped_items = [self._latex_escape(str(item)) for item in items]
         return f" {bullet} ".join(escaped_items)
     
-    def generate_latex(self, resume_data: ResumeData = None, template_name: str = "resume") -> str:
-        """Generate LaTeX document from YAML data using simple variable replacement.
+    def generate_latex(self, resume_data: ResumeData, template_name: str = "resume") -> str:
+        """Generate LaTeX document from resume data.
         
         Args:
-            resume_data: Resume data (ignored, we load from YAML directly)
+            resume_data: Resume data object
             template_name: Name of template to use (without .tex extension)
             
         Returns:
@@ -127,13 +127,10 @@ class LaTeXGenerator:
             LaTeXGenerationError: If generation fails
         """
         try:
-            # Load YAML data directly (bypass schema validation)
-            yaml_data = self._load_yaml_data()
+            # Use the template manager to render the resume
+            latex_content = self.template_manager.render_resume(template_name, resume_data)
             
-            # Load and render template
-            template_content = self.render_template(template_name, yaml_data)
-            
-            return template_content
+            return latex_content
             
         except Exception as e:
             raise LaTeXGenerationError(f"Failed to generate LaTeX: {e}")
