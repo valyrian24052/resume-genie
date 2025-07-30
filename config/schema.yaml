@@ -1,0 +1,201 @@
+# YAML Schema for Resume Data Validation
+type: object
+required:
+  - basic
+properties:
+  basic:
+    type: object
+    required:
+      - name
+      - address
+      - contact
+    properties:
+      name:
+        type: string
+        minLength: 1
+      address:
+        type: array
+        items:
+          type: string
+        minItems: 1
+      contact:
+        type: object
+        required:
+          - email
+          - phone
+        properties:
+          email:
+            type: string
+            format: email
+          phone:
+            type: string
+            minLength: 1
+      websites:
+        type: array
+        items:
+          type: object
+          required:
+            - text
+            - url
+          properties:
+            text:
+              type: string
+              minLength: 1
+            url:
+              type: string
+              format: uri
+            icon:
+              type: string
+
+  summary:
+    type: [string, "null"]
+
+  experiences:
+    type: array
+    items:
+      type: object
+      required:
+        - company
+        - titles
+      properties:
+        company:
+          type: string
+          minLength: 1
+        titles:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - startdate
+              - enddate
+            properties:
+              name:
+                type: string
+                minLength: 1
+              startdate:
+                type: string
+                minLength: 1
+              enddate:
+                type: string
+                minLength: 1
+          minItems: 1
+        highlights:
+          type: array
+          items:
+            type: string
+        unedited:
+          type: array
+          items:
+            type: string
+
+  education:
+    type: array
+    items:
+      type: object
+      required:
+        - school
+        - degrees
+      properties:
+        school:
+          type: string
+          minLength: 1
+        degrees:
+          type: array
+          items:
+            type: object
+            required:
+              - names
+              - startdate
+              - enddate
+            properties:
+              names:
+                type: array
+                items:
+                  type: string
+                minItems: 1
+              startdate:
+                type: string
+                minLength: 1
+              enddate:
+                type: string
+                minLength: 1
+              gpa:
+                type: number
+                minimum: 0.0
+                maximum: 10.0
+          minItems: 1
+        achievements:
+          type: array
+          items:
+            type: string
+
+  projects:
+    type: array
+    items:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        subtitle:
+          type: [string, "null"]
+        url:
+          type: [string, "null"]
+          format: uri
+        technologies:
+          type: array
+          items:
+            type: string
+        highlights:
+          type: array
+          items:
+            type: string
+
+  research:
+    type: array
+    items:
+      type: object
+      required:
+        - title
+        - description
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        publication_date:
+          type: [string, "null"]
+        collaborators:
+          type: array
+          items:
+            type: string
+        keywords:
+          type: array
+          items:
+            type: string
+
+  skills:
+    type: array
+    items:
+      type: object
+      required:
+        - category
+        - skills
+      properties:
+        category:
+          type: string
+          minLength: 1
+        skills:
+          type: array
+          items:
+            type: string
+          minItems: 1

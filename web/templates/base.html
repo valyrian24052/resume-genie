@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Resume Builder{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #1f6feb;
+            --border: #30363d;
+            --success: #238636;
+            --danger: #da3633;
+            --warning: #9e6a03;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background-color: var(--bg-secondary) !important;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .navbar-brand {
+            color: var(--text-primary) !important;
+            font-weight: 600;
+        }
+        
+        .container-main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            background-color: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 1.5rem;
+        }
+        
+        .form-control {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+        }
+        
+        .form-control:focus {
+            background-color: var(--bg-tertiary);
+            border-color: var(--accent);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(88, 166, 255, 0.25);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .form-label {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            font-weight: 500;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+            border-left: 3px solid var(--success);
+        }
+        
+        .alert-danger {
+            background-color: rgba(218, 54, 51, 0.15);
+            color: #f85149;
+            border-left: 3px solid var(--danger);
+        }
+        
+        .alert-warning {
+            background-color: rgba(158, 106, 3, 0.15);
+            color: #d29922;
+            border-left: 3px solid var(--warning);
+        }
+        
+        .text-danger {
+            color: #f85149 !important;
+        }
+        
+        .preview-section {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .bg-light {
+            background-color: var(--bg-tertiary) !important;
+            border: 1px solid var(--border);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'resume_app:index' %}">
+                AI Resume Builder
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+    
+    <script>
+        // API Key local storage functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKeyInput = document.getElementById('id_openai_api_key');
+            const form = document.getElementById('resumeForm');
+            
+            if (apiKeyInput) {
+                // Load saved API key on page load
+                const savedApiKey = localStorage.getItem('openai_api_key');
+                if (savedApiKey) {
+                    apiKeyInput.value = savedApiKey;
+                }
+                
+                // Save API key when form is submitted
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        if (apiKeyInput.value.trim()) {
+                            localStorage.setItem('openai_api_key', apiKeyInput.value.trim());
+                        }
+                    });
+                }
+                
+                // Save API key when input changes (for convenience)
+                apiKeyInput.addEventListener('blur', function() {
+                    if (this.value.trim()) {
+                        localStorage.setItem('openai_api_key', this.value.trim());
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

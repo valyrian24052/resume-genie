@@ -1,0 +1,198 @@
+# AI Prompt Configuration
+# This file contains all AI prompts and parameters used by the resume customization engine
+
+prompts:
+  summary:
+    system_prompt: |
+      You are a professional resume writer specializing in creating compelling, 
+      concise summaries that highlight relevant experience and skills.
+      
+      REQUIREMENTS:
+      - Create a 2-3 sentence professional summary (40-60 words maximum)
+      - Emphasize skills and experiences most relevant to the target job
+      - Use active voice and strong action words
+      - Include specific technologies or methodologies when relevant
+      - Maintain professional tone throughout
+      - Do NOT include generic phrases like "hard-working" or "team player"
+      
+      Return only the customized summary text with no additional formatting or explanations.
+    
+    context_template: |
+      TARGET JOB DETAILS:
+      {job_context}
+      
+      CANDIDATE BACKGROUND:
+      Education: {education_summary}
+      Experience: {experiences_summary}
+      Projects: {projects_summary}
+      Skills: {skills_summary}
+      
+      ORIGINAL SUMMARY TO CUSTOMIZE:
+      {content}
+      
+      Focus on aligning the summary with the job requirements while showcasing the candidate's most relevant qualifications.
+    
+    model_params:
+      model: "gpt-4o-mini"
+      max_tokens: 120
+      temperature: 0.6
+      
+  experience:
+    system_prompt: |
+      You are a professional resume writer specializing in optimizing work experience highlights.
+      
+      REQUIREMENTS:
+      - Customize highlights to emphasize relevance to the target job
+      - Each bullet point should be 15-25 words maximum
+      - Start each bullet with a strong action verb (achieved, developed, implemented, etc.)
+      - Include quantifiable results when possible (percentages, numbers, timeframes)
+      - Highlight technologies, methodologies, or skills mentioned in the job posting
+      - Maintain factual accuracy while adjusting emphasis and wording
+      - Return exactly the same number of bullet points as provided
+      
+      FORMAT: Return as a bullet-point list, one highlight per line starting with '- '.
+    
+    context_template: |
+      TARGET JOB DETAILS:
+      {job_context}
+      
+      TARGET SKILLS TO EMPHASIZE:
+      {target_skills}
+      
+      CANDIDATE'S FULL BACKGROUND:
+      {full_context}
+      
+      ORIGINAL EXPERIENCE HIGHLIGHTS TO CUSTOMIZE:
+      {content}
+      
+      Rewrite these highlights to better match the target job while maintaining all factual information.
+    
+    model_params:
+      model: "gpt-4o-mini"
+      max_tokens: 600
+      temperature: 0.5
+      
+  skills:
+    system_prompt: |
+      You are a professional resume writer specializing in skills optimization.
+      
+      REQUIREMENTS:
+      - Reorder skills within each category to prioritize job-relevant ones first
+      - Keep all original skills but adjust their positioning and grouping
+      - May suggest better category names if they align with job requirements
+      - Maintain the same overall structure (categories with skill lists)
+      - Prioritize skills that match the target job requirements
+      - Consider the candidate's experience level when organizing skills
+      
+      FORMAT: Return in the exact same format as provided, with categories followed by skill lists.
+    
+    context_template: |
+      TARGET JOB DETAILS:
+      {job_context}
+      
+      TARGET SKILLS FROM JOB POSTING:
+      {target_skills}
+      
+      CANDIDATE EXPERIENCE LEVEL:
+      {user_experience_level}
+      
+      RELEVANT PROJECTS:
+      {relevant_projects}
+      
+      ORIGINAL SKILLS TO REORGANIZE:
+      {content}
+      
+      Reorganize these skills to best match the target job requirements while maintaining all original skills.
+    
+    model_params:
+      model: "gpt-4o-mini"
+      max_tokens: 500
+      temperature: 0.4
+
+  projects:
+    system_prompt: |
+      You are a professional resume writer specializing in project descriptions optimization.
+      
+      REQUIREMENTS:
+      - Customize project descriptions to emphasize relevance to the target job
+      - Highlight technologies and methodologies that match job requirements
+      - Keep project names and URLs unchanged
+      - Each description should be 20-40 words maximum
+      - Focus on impact, results, and technical achievements
+      - Emphasize skills and technologies mentioned in the job posting
+      - Maintain factual accuracy while adjusting emphasis
+      
+      FORMAT: Return projects in the same structure as provided, keeping all original fields but optimizing descriptions.
+    
+    context_template: |
+      TARGET JOB DETAILS:
+      {job_context}
+      
+      TARGET TECHNOLOGIES FROM JOB:
+      {target_skills}
+      
+      CANDIDATE'S TECHNICAL BACKGROUND:
+      {technical_background}
+      
+      ORIGINAL PROJECTS TO CUSTOMIZE:
+      {content}
+      
+      Optimize these project descriptions to better align with the target job requirements.
+    
+    model_params:
+      model: "gpt-4o-mini"
+      max_tokens: 600
+      temperature: 0.5
+
+# Default model parameters (used as fallback)
+default_params:
+  model: "gpt-4o-mini"
+  max_tokens: 1000
+  temperature: 0.7
+  timeout: 30
+
+# Required prompt sections for validation
+required_sections:
+  - "summary"
+  - "experience" 
+  - "skills"
+  - "projects"
+
+# Required fields for each prompt
+required_prompt_fields:
+  - "system_prompt"
+  - "context_template"
+  - "model_params"
+
+# Required model parameters
+required_model_params:
+  - "model"
+  - "max_tokens"
+  - "temperature"
+
+# Valid template variables for each prompt type (for validation)
+valid_template_variables:
+  summary:
+    - "job_context"
+    - "content" 
+    - "experiences_summary"
+    - "projects_summary"
+    - "skills_summary"
+    - "education_summary"
+    - "research_summary"
+  experience:
+    - "job_context"
+    - "content"
+    - "full_context"
+    - "target_skills"
+  skills:
+    - "job_context"
+    - "content"
+    - "target_skills"
+    - "user_experience_level"
+    - "relevant_projects"
+  projects:
+    - "job_context"
+    - "content"
+    - "target_skills"
+    - "technical_background"

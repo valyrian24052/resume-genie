@@ -1,0 +1,138 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  detailed:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  simple:
+    format: '%(asctime)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  json:
+    format: '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "module": "%(module)s", "line": %(lineno)d, "message": "%(message)s"}'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  
+  file_detailed:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: /app/logs/resume_genie.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+  
+  file_error:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: /app/logs/errors.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+  
+  ai_file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: json
+    filename: /app/logs/ai_operations.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+  
+  web_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: /app/logs/web_requests.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+
+loggers:
+  # AI module loggers
+  ai:
+    level: DEBUG
+    handlers: [ai_file, console]
+    propagate: false
+  
+  ai.customization_engine:
+    level: DEBUG
+    handlers: [ai_file, console]
+    propagate: false
+  
+  ai.ai_client:
+    level: DEBUG
+    handlers: [ai_file, console]
+    propagate: false
+  
+  ai.prompt_loader:
+    level: DEBUG
+    handlers: [ai_file, console]
+    propagate: false
+  
+  ai.context_builder:
+    level: DEBUG
+    handlers: [ai_file, console]
+    propagate: false
+  
+  # Django loggers
+  django:
+    level: INFO
+    handlers: [web_file, console]
+    propagate: false
+  
+  django.request:
+    level: INFO
+    handlers: [web_file, file_error]
+    propagate: false
+  
+  django.server:
+    level: INFO
+    handlers: [web_file, console]
+    propagate: false
+  
+  # Web app loggers
+  web:
+    level: INFO
+    handlers: [web_file, console]
+    propagate: false
+  
+  web.resume_app:
+    level: INFO
+    handlers: [web_file, console]
+    propagate: false
+  
+  # Core module loggers
+  core:
+    level: INFO
+    handlers: [file_detailed, console]
+    propagate: false
+  
+  models:
+    level: INFO
+    handlers: [file_detailed, console]
+    propagate: false
+  
+  # Third-party loggers
+  requests:
+    level: WARNING
+    handlers: [file_detailed]
+    propagate: false
+  
+  urllib3:
+    level: WARNING
+    handlers: [file_detailed]
+    propagate: false
+
+root:
+  level: INFO
+  handlers: [file_detailed, console, file_error]

@@ -1,0 +1,133 @@
+# Replace all placeholder values with your actual information
+# Use this template to create your personalized resume data
+
+# Basic Information Section
+basic:
+  name: "[Your Full Name]"
+  address:
+    - "[Your Address Line 1]"
+    - "[City, State ZIP]"
+  contact:
+    email: "[your.email@domain.com]"
+    phone: "[+1-XXX-XXX-XXXX]"
+  websites:
+    - text: "[yourprofile]"
+      url: "[https://linkedin.com/in/yourprofile]"
+      icon: "linkedin"
+    - text: "[YourUsername]"
+      url: "[https://github.com/yourusername]"
+      icon: "github"
+    - text: "[Portfolio]"
+      url: "[https://yourportfolio.com]"
+      icon: "web"
+
+# Optional summary section
+summary: "[Brief professional summary highlighting your key strengths and career objectives]"
+
+# Education Section
+education:
+  - school: "[University Name]"
+    degrees:
+      - names: ["[Degree Type]", "[Field of Study]"]
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+        gpa: 3.5
+    achievements:
+      - "[Relevant Coursework]"
+      - "[Academic Achievement or Honor]"
+
+# Skills Section
+skills:
+  - category: "Programming Languages"
+    skills: ["[Programming Language 1]", "[Programming Language 2]", "[Language 3]"]
+  - category: "Frameworks & Libraries"
+    skills: ["[Framework 1]", "[Framework 2]", "[Framework 3]"]
+  - category: "Tools & Technologies"
+    skills: ["[Tool 1]", "[Tool 2]", "[Tool 3]", "[Tool 4]"]
+  - category: "Technical Proficiency"
+    skills: ["[Skill Area 1]", "[Skill Area 2]", "[Skill Area 3]"]
+
+# Experience Section
+experiences:
+  - company: "[Company Name 1]"
+    titles:
+      - name: "[Job Title]"
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+    highlights:
+      - "[Achievement or responsibility that demonstrates impact]"
+      - "[Quantified result showing your contribution]"
+      - "[Technical skill or leadership example]"
+    unedited:
+      - "[Raw achievement for AI processing]"
+
+  - company: "[Company Name 2]"
+    titles:
+      - name: "[Job Title]"
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+    highlights:
+      - "[Another achievement with specific metrics]"
+      - "[Problem you solved and the outcome]"
+      - "[Technology or process improvement you implemented]"
+
+  - company: "[Company Name 3]"
+    titles:
+      - name: "[Job Title] (Intern)"
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+    highlights:
+      - "[Internship achievement or project completed]"
+      - "[Skills developed or technologies learned]"
+
+  - company: "[Company Name 4]"
+    titles:
+      - name: "[Job Title] (Intern)"
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+    highlights:
+      - "[Another internship experience or project]"
+      - "[Collaboration or teamwork example]"
+
+  - company: "[Company Name 5]"
+    titles:
+      - name: "[Job Title] (Intern)"
+        startdate: "[Start Date]"
+        enddate: "[End Date]"
+    highlights:
+      - "[Final internship or early career experience]"
+      - "[Innovation or process improvement example]"
+
+# Projects Section
+projects:
+  - name: "[Project Name 1]"
+    subtitle: "[Brief Project Description]"
+    url: "[https://project-url.com]"
+    description: "[Detailed description of the project, technologies used, and impact. Explain the problem solved, your approach, and the results achieved.]"
+    technologies: ["[Technology 1]", "[Technology 2]", "[Technology 3]"]
+    highlights:
+      - "[Key achievement or feature implemented]"
+      - "[Impact or result of the project]"
+
+  - name: "[Project Name 2]"
+    subtitle: "[Brief Project Description]"
+    url: "[https://project-url.com]"
+    description: "[Another project description with focus on technical implementation, challenges overcome, and learning outcomes.]"
+    technologies: ["[Technology A]", "[Technology B]", "[Technology C]"]
+    highlights:
+      - "[Technical challenge overcome]"
+      - "[Learning outcome or skill developed]"
+
+# Research Experience Section
+research:
+  - title: "[Research Project Title 1]"
+    description: "[Description of research methodology, findings, and applications. Include any publications, presentations, or practical implementations.]"
+    publication_date: "[Publication Date]"
+    collaborators: ["[Collaborator 1]", "[Collaborator 2]"]
+    keywords: ["[Keyword 1]", "[Keyword 2]", "[Keyword 3]"]
+
+  - title: "[Research Project Title 2]"
+    description: "[Another research project with focus on innovation, collaboration, and real-world impact. Mention any tools, frameworks, or methodologies used.]"
+    publication_date: "[Publication Date]"
+    collaborators: ["[Collaborator A]", "[Collaborator B]"]
+    keywords: ["[Research Area 1]", "[Research Area 2]", "[Methodology]"]

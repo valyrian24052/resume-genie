@@ -1,0 +1,18 @@
+# Core dependencies
+Django>=4.2.0,<5.0.0
+PyYAML>=6.0
+Jinja2>=3.1.0
+requests>=2.28.0
+urllib3>=1.26.0
+jsonschema>=4.0.0
+
+# PDF generation
+# Note: These require system dependencies (LaTeX)
+# See Dockerfile for system package installation
+
+# Development and testing
+pytest>=7.0.0
+pytest-django>=4.5.0
+
+# Production server
+gunicorn>=20.1.0

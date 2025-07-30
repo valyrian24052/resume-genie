@@ -1,0 +1,13 @@
+__pycache__
+.kiro
+.pytest_cache
+.vscode
+logs/ai_operations.log
+logs/cli.log
+logs/docker_resume.log
+logs/errors.log
+logs/resume_builder.log
+logs/resume_genie.log
+logs/test.log
+logs/web_requests.log
+__init__.py
