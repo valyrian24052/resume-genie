@@ -1,4 +1,4 @@
-\documentclass[a4paper,20pt]{article}
+\documentclass[a4paper,11pt]{article}
 
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
@@ -72,67 +72,41 @@
 
 %----------HEADING-----------------
 \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-  \textbf{{\LARGE {{{NAME}}}}} & Portfolio: \href{{{{PORTFOLIO_URL}}}}{Here}\\
-  \href{{{{LINKEDIN_URL}}}}{Linkedin: {{{LINKEDIN_TEXT}}}} & Mobile:~~~{{{PHONE}}} \\
-  \href{{{{GITHUB_URL}}}}{Github: ~~{{{GITHUB_TEXT}}}} & Email: \href{mailto:{{{EMAIL}}}}{{{EMAIL}}}\\
+  \textbf{{\LARGE {{NAME}}}} & {{PORTFOLIO_LINK}}\\
+  {{LINKEDIN_LINK}} & Mobile: {{PHONE}} \\
+  {{GITHUB_LINK}} & Email: \href{mailto:{{EMAIL}}}{{{EMAIL}}}\\
 \end{tabular*}
 
 %-----------EDUCATION-----------------
 \section{Education}
   \resumeSubHeadingListStart
     \resumeSubheading
-      {{{{EDUCATION_SCHOOL}}}}{{{{EDUCATION_LOCATION}}}}
-      {{{{EDUCATION_DEGREE}}}};  GPA: {{{EDUCATION_GPA}}}{{{{EDUCATION_DATES}}}}
-      {\scriptsize \textit{ \footnotesize{\newline{}\textbf{Relevant Coursework:}  {{{EDUCATION_COURSEWORK}}}}}}
+      {{{EDUCATION_SCHOOL}}}{{{EDUCATION_LOCATION}}}
+      {{{EDUCATION_DEGREE}}}{{{EDUCATION_DATES}}}
+      {\scriptsize \textit{ \footnotesize{\newline{}\textbf{Relevant Coursework:} {{EDUCATION_COURSEWORK}}}}}
   \resumeSubHeadingListEnd
 
-{% if skills %}
 \section{Skills Summary}
   \resumeSubHeadingListStart
-    {% for skill_category in skills %}
-    \resumeSubItem{{{{skill_category.category}}}}{{{{skill_category.skills}}}}
-    {% endfor %}
+{{SKILLS_SECTION}}
   \resumeSubHeadingListEnd
-{% endif %}
 
 \vspace{-5pt}
-{% if experiences %}
 \section{Experience}
   \resumeSubHeadingListStart
-    {% for experience in experiences %}
-    \resumeSubheading
-      {{{experience.company}}}{}
-      {{{experience.titles.0.name}}}{{experience.titles.0.startdate}} - {{{experience.titles.0.enddate}}}
-      \resumeItemListStart
-        {% for highlight in experience.highlights %}
-        \resumeItem{}{{{highlight}}}
-        {% endfor %}
-      \resumeItemListEnd
-    \vspace{2pt}
-    {% endfor %}
+{{EXPERIENCE_SECTION}}
   \resumeSubHeadingListEnd
-{% endif %}
 
-{% if projects %}
 \section{Projects}
   \resumeSubHeadingListStart
-    {% for project in projects %}
-    \resumeSubItem{\textbf{{{{project.name}}}}}{{{{project.description}}}}
-    \vspace{3pt}
-    {% endfor %}
+{{PROJECTS_SECTION}}
   \resumeSubHeadingListEnd
-{% endif %}
 
-{% if research %}
 \vspace{-5pt}
 \section{Research Experience}
   \resumeSubHeadingListStart
-    {% for research_item in research %}
-    \resumeSubItem{{{{research_item.title}}}}{{{{research_item.description}}}}
-    \vspace{2pt}
-    {% endfor %}
+{{RESEARCH_SECTION}}
   \resumeSubHeadingListEnd
-{% endif %}
 
 \vspace{-5pt}
 \end{document}

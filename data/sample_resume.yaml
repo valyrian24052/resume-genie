@@ -1,0 +1,72 @@
+basic:
+  name: "John Doe"
+  address:
+    - "123 Main Street"
+    - "San Francisco, CA 94105"
+  contact:
+    email: "john.doe@email.com"
+    phone: "+1 (555) 123-4567"
+  websites:
+    - text: "LinkedIn"
+      url: "https://linkedin.com/in/johndoe"
+    - text: "GitHub"
+      url: "https://github.com/johndoe"
+    - text: "Portfolio"
+      url: "https://johndoe.dev"
+
+summary: "Experienced software engineer with 5+ years developing scalable web applications and leading cross-functional teams."
+
+experiences:
+  - company: "Tech Solutions Inc."
+    titles:
+      - name: "Senior Software Engineer"
+        startdate: "2021"
+        enddate: "Present"
+    highlights:
+      - "Led development of microservices architecture serving 1M+ daily users"
+      - "Mentored 3 junior developers and improved team code review process"
+      - "Reduced application response time by 40% through database optimization"
+
+  - company: "StartupCorp"
+    titles:
+      - name: "Full Stack Developer"
+        startdate: "2018"
+        enddate: "2021"
+    highlights:
+      - "Developed MVP for B2B SaaS platform from concept to launch"
+      - "Built responsive frontend using React and modern CSS frameworks"
+      - "Designed and implemented RESTful APIs with comprehensive documentation"
+
+education:
+  - school: "University of California, Berkeley"
+    degrees:
+      - names: ["Bachelor of Science in Computer Science"]
+        startdate: "2014"
+        enddate: "2018"
+        gpa: 3.7
+    achievements:
+      - "Data Structures, Algorithms, Software Engineering, Database Systems"
+
+projects:
+  - name: "E-commerce Platform"
+    description: "Built a complete e-commerce platform with user authentication, payment processing, and inventory management using Python, Django, and PostgreSQL"
+    technologies: ["Python", "Django", "PostgreSQL", "React"]
+
+  - name: "Data Analytics Dashboard"
+    description: "Interactive dashboard for business intelligence and data visualization using Python, Pandas, and Streamlit"
+    technologies: ["Python", "Pandas", "Plotly", "Streamlit"]
+
+skills:
+  - category: "Programming Languages"
+    skills: ["Python", "JavaScript", "TypeScript", "Java"]
+  - category: "Web Frameworks"
+    skills: ["Django", "Flask", "React", "Node.js"]
+  - category: "Databases"
+    skills: ["PostgreSQL", "MongoDB", "Redis"]
+  - category: "Tools & Technologies"
+    skills: ["Docker", "AWS", "Git", "Linux"]
+
+research:
+  - title: "Machine Learning for Web Performance Optimization"
+    description: "Research on using ML algorithms to predict and optimize web application performance, published in IEEE conference proceedings"
+    publication_date: "2022"

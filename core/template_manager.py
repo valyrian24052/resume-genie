@@ -14,20 +14,18 @@ class TemplateValidationError(Exception):
     pass
 
 
-class DynamicTemplateEngine:
-    """Dynamic LaTeX template engine with iteration and conditional rendering."""
+class SimpleTemplateEngine:
+    """Simple LaTeX template engine with basic placeholder replacement."""
     
     def __init__(self):
-        """Initialize the dynamic template engine."""
-        self.variable_pattern = re.compile(r'\{\{\{([^}]+)\}\}\}')
-        self.loop_pattern = re.compile(r'\{% for (\w+) in (\w+) %\}(.*?)\{% endfor %\}', re.DOTALL)
-        self.conditional_pattern = re.compile(r'\{% if (\w+) %\}(.*?)\{% endif %\}', re.DOTALL)
+        """Initialize the simple template engine."""
+        pass
         
     def render_template(self, template_content: str, resume_data: ResumeData) -> str:
-        """Render template with dynamic data.
+        """Render template with simple placeholder replacement.
         
         Args:
-            template_content: LaTeX template content with dynamic placeholders
+            template_content: LaTeX template content with placeholders
             resume_data: Resume data to populate template
             
         Returns:
@@ -37,238 +35,164 @@ class DynamicTemplateEngine:
             TemplateValidationError: If template rendering fails
         """
         try:
-            # Convert resume data to dictionary for easier access
-            data_dict = self._prepare_template_data(resume_data)
+            # Prepare all template data
+            template_vars = self._prepare_template_data(resume_data)
             
-            # Process template in order: loops, conditionals, then variables
-            rendered = self._process_loops(template_content, data_dict)
-            rendered = self._process_conditionals(rendered, data_dict)
-            rendered = self._process_variables(rendered, data_dict)
+            # Replace all placeholders
+            rendered = template_content
+            for key, value in template_vars.items():
+                placeholder = f"{{{{{key}}}}}"
+                rendered = rendered.replace(placeholder, str(value))
             
             return rendered
             
         except Exception as e:
             raise TemplateValidationError(f"Template rendering failed: {e}")
     
-    def _prepare_template_data(self, resume_data: ResumeData) -> Dict[str, Any]:
-        """Prepare resume data for template processing.
+    def _prepare_template_data(self, resume_data: ResumeData) -> Dict[str, str]:
+        """Prepare resume data for simple template replacement.
         
         Args:
             resume_data: Resume data object
             
         Returns:
-            Dictionary with flattened data for template access
+            Dictionary with all template variables as strings
         """
-        data_dict = asdict(resume_data)
+        template_vars = {}
         
-        # Flatten basic info for easier access
-        if 'basic' in data_dict:
-            basic = data_dict['basic']
-            data_dict.update({
-                'NAME': basic['name'],
-                'EMAIL': basic['contact']['email'],
-                'PHONE': basic['contact']['phone'],
-            })
+        # Basic info
+        if resume_data.basic:
+            template_vars['NAME'] = resume_data.basic.name
+            template_vars['EMAIL'] = resume_data.basic.contact.email
+            template_vars['PHONE'] = resume_data.basic.contact.phone
             
             # Handle websites
-            for website in basic.get('websites', []):
-                if 'portfolio' in website['text'].lower():
-                    data_dict['PORTFOLIO_URL'] = website['url']
-                elif 'linkedin' in website['text'].lower():
-                    data_dict['LINKEDIN_URL'] = website['url']
-                    data_dict['LINKEDIN_TEXT'] = website['text']
-                elif 'github' in website['text'].lower():
-                    data_dict['GITHUB_URL'] = website['url']
-                    data_dict['GITHUB_TEXT'] = website['text']
+            portfolio_link = ""
+            linkedin_link = ""
+            github_link = ""
+            
+            for website in resume_data.basic.websites:
+                if 'portfolio' in website.text.lower() or 'web' in website.text.lower():
+                    portfolio_link = f"Portfolio: \\href{{{website.url}}}{{{website.text}}}"
+                elif 'linkedin' in website.text.lower():
+                    linkedin_link = f"\\href{{{website.url}}}{{LinkedIn: {website.text}}}"
+                elif 'github' in website.text.lower():
+                    github_link = f"\\href{{{website.url}}}{{GitHub: {website.text}}}"
+            
+            template_vars['PORTFOLIO_LINK'] = portfolio_link
+            template_vars['LINKEDIN_LINK'] = linkedin_link
+            template_vars['GITHUB_LINK'] = github_link
         
-        # Flatten education for easier access
-        if 'education' in data_dict and data_dict['education']:
-            edu = data_dict['education'][0]  # Assume first education entry
-            data_dict.update({
-                'EDUCATION_SCHOOL': edu['school'],
-                'EDUCATION_LOCATION': '',  # Add if available in data
-                'EDUCATION_DEGREE': ', '.join(edu['degrees'][0]['names']) if edu['degrees'] else '',
-                'EDUCATION_GPA': str(edu['degrees'][0].get('gpa', '')) if edu['degrees'] else '',
-                'EDUCATION_DATES': f"{edu['degrees'][0]['startdate']} - {edu['degrees'][0]['enddate']}" if edu['degrees'] else '',
-                'EDUCATION_COURSEWORK': ', '.join(edu.get('achievements', []))
+        # Education
+        if resume_data.education and resume_data.education[0]:
+            edu = resume_data.education[0]
+            template_vars['EDUCATION_SCHOOL'] = edu.school
+            template_vars['EDUCATION_LOCATION'] = ""  # Can be added later
+            
+            if edu.degrees and edu.degrees[0]:
+                degree = edu.degrees[0]
+                template_vars['EDUCATION_DEGREE'] = ', '.join(degree.names)
+                template_vars['EDUCATION_DATES'] = f"{degree.startdate} - {degree.enddate}"
+                template_vars['EDUCATION_GPA'] = f"GPA: {degree.gpa}" if degree.gpa else ""
+            else:
+                template_vars['EDUCATION_DEGREE'] = ""
+                template_vars['EDUCATION_DATES'] = ""
+                template_vars['EDUCATION_GPA'] = ""
+            
+            template_vars['EDUCATION_COURSEWORK'] = ', '.join(edu.achievements) if edu.achievements else ""
+        else:
+            template_vars.update({
+                'EDUCATION_SCHOOL': "",
+                'EDUCATION_LOCATION': "",
+                'EDUCATION_DEGREE': "",
+                'EDUCATION_DATES': "",
+                'EDUCATION_GPA': "",
+                'EDUCATION_COURSEWORK': ""
             })
         
-        # Flatten skills for easier access
-        if 'skills' in data_dict:
-            skills_dict = {}
-            for skill_cat in data_dict['skills']:
-                category = skill_cat['category'].upper().replace(' ', '_')
-                skills_dict[f'SKILLS_{category}'] = ', '.join(skill_cat['skills'])
-            data_dict.update(skills_dict)
+        # Skills section
+        skills_section = ""
+        if resume_data.skills:
+            for skill_cat in resume_data.skills:
+                skills_list = ', '.join(skill_cat.skills)
+                skills_section += f"    \\resumeSubItem{{{skill_cat.category}}}{{{skills_list}}}\n"
+        template_vars['SKILLS_SECTION'] = skills_section
         
-        return data_dict
+        # Experience section
+        experience_section = ""
+        if resume_data.experiences:
+            for exp in resume_data.experiences:
+                if exp.titles and exp.titles[0]:
+                    title = exp.titles[0]
+                    experience_section += f"    \\resumeSubheading\n"
+                    experience_section += f"      {{{exp.company}}}{{}}\n"
+                    experience_section += f"      {{{title.name}}}{{{title.startdate} - {title.enddate}}}\n"
+                    
+                    if exp.highlights:
+                        experience_section += f"      \\resumeItemListStart\n"
+                        for highlight in exp.highlights:
+                            # Escape LaTeX special characters
+                            safe_highlight = self._escape_latex(highlight)
+                            experience_section += f"        \\resumeItemWithoutTitle{{{safe_highlight}}}\n"
+                        experience_section += f"      \\resumeItemListEnd\n"
+                    
+                    experience_section += f"    \\vspace{{2pt}}\n"
+        template_vars['EXPERIENCE_SECTION'] = experience_section
+        
+        # Projects section
+        projects_section = ""
+        if resume_data.projects:
+            for project in resume_data.projects:
+                safe_name = self._escape_latex(project.name)
+                safe_desc = self._escape_latex(project.description)
+                projects_section += f"    \\resumeSubItem{{\\textbf{{{safe_name}}}}}{{{safe_desc}}}\n"
+                projects_section += f"    \\vspace{{3pt}}\n"
+        template_vars['PROJECTS_SECTION'] = projects_section
+        
+        # Research section
+        research_section = ""
+        if resume_data.research:
+            for research in resume_data.research:
+                safe_title = self._escape_latex(research.title)
+                safe_desc = self._escape_latex(research.description)
+                research_section += f"    \\resumeSubItem{{{safe_title}}}{{{safe_desc}}}\n"
+                research_section += f"    \\vspace{{2pt}}\n"
+        template_vars['RESEARCH_SECTION'] = research_section
+        
+        return template_vars
     
-    def _process_loops(self, template_content: str, data_dict: Dict[str, Any]) -> str:
-        """Process for loops in template.
+    def _escape_latex(self, text: str) -> str:
+        """Escape LaTeX special characters in text.
         
         Args:
-            template_content: Template content with loop syntax
-            data_dict: Data dictionary for loop processing
+            text: Text to escape
             
         Returns:
-            Template content with loops expanded
+            LaTeX-safe text
         """
-        def replace_loop(match):
-            item_var = match.group(1)
-            collection_var = match.group(2)
-            loop_body = match.group(3)
-            
-            if collection_var not in data_dict:
-                return ''  # Skip if collection doesn't exist
-            
-            collection = data_dict[collection_var]
-            if not isinstance(collection, list) or not collection:
-                return ''  # Skip if empty or not a list
-            
-            rendered_items = []
-            for item in collection:
-                # Replace item variables in loop body
-                item_body = loop_body
-                if isinstance(item, dict):
-                    # Handle nested object access
-                    item_body = self._replace_nested_variables(item_body, item_var, item)
-                else:
-                    # Handle simple values
-                    placeholder = f'{{{{{item_var}}}}}'
-                    item_body = item_body.replace(placeholder, str(item))
-                
-                rendered_items.append(item_body)
-            
-            return '\n'.join(rendered_items)
+        if not text:
+            return ""
         
-        return self.loop_pattern.sub(replace_loop, template_content)
-    
-    def _replace_nested_variables(self, content: str, item_var: str, item_data: Dict[str, Any]) -> str:
-        """Replace nested variable references in content.
+        # LaTeX special characters that need escaping
+        replacements = {
+            '&': '\\&',
+            '%': '\\%',
+            '$': '\\$',
+            '#': '\\#',
+            '^': '\\textasciicircum{}',
+            '_': '\\_',
+            '{': '\\{',
+            '}': '\\}',
+            '~': '\\textasciitilde{}',
+            '\\': '\\textbackslash{}'
+        }
         
-        Args:
-            content: Content with variable references
-            item_var: Variable name for the item
-            item_data: Data dictionary for the item
-            
-        Returns:
-            Content with variables replaced
-        """
-        # Pattern to match nested variable access like {{{item.key}}} or {{{item.key.subkey}}}
-        nested_pattern = re.compile(rf'\{{{{{item_var}\.([^}}]+)\}}}}')
+        result = text
+        for char, replacement in replacements.items():
+            result = result.replace(char, replacement)
         
-        def replace_nested(match):
-            key_path = match.group(1)
-            keys = key_path.split('.')
-            
-            value = item_data
-            try:
-                for key in keys:
-                    if isinstance(value, dict):
-                        value = value[key]
-                    elif isinstance(value, list) and key.isdigit():
-                        value = value[int(key)]
-                    elif hasattr(value, key):
-                        value = getattr(value, key)
-                    else:
-                        return f"[{item_var}.{key_path}]"  # Placeholder for missing
-                
-                if value is None:
-                    return ''
-                return str(value)
-            except (KeyError, IndexError, AttributeError):
-                return f"[{item_var}.{key_path}]"  # Placeholder for missing
-        
-        return nested_pattern.sub(replace_nested, content)
-    
-    def _process_conditionals(self, template_content: str, data_dict: Dict[str, Any]) -> str:
-        """Process conditional statements in template.
-        
-        Args:
-            template_content: Template content with conditional syntax
-            data_dict: Data dictionary for conditional evaluation
-            
-        Returns:
-            Template content with conditionals processed
-        """
-        def replace_conditional(match):
-            condition_var = match.group(1)
-            conditional_body = match.group(2)
-            
-            # Check if condition is met
-            if condition_var in data_dict:
-                value = data_dict[condition_var]
-                # Consider non-empty lists, non-empty strings, and True as truthy
-                if (isinstance(value, list) and value) or \
-                   (isinstance(value, str) and value.strip()) or \
-                   (isinstance(value, bool) and value) or \
-                   (value is not None and str(value).strip()):
-                    return conditional_body
-            
-            return ''  # Remove conditional block if condition not met
-        
-        return self.conditional_pattern.sub(replace_conditional, template_content)
-    
-    def _process_variables(self, template_content: str, data_dict: Dict[str, Any]) -> str:
-        """Process variable replacements in template.
-        
-        Args:
-            template_content: Template content with variable placeholders
-            data_dict: Data dictionary for variable replacement
-            
-        Returns:
-            Template content with variables replaced
-        """
-        def replace_variable(match):
-            var_name = match.group(1).strip()
-            
-            if var_name in data_dict:
-                value = data_dict[var_name]
-                if value is None:
-                    return ''
-                return str(value)
-            else:
-                # Log missing variable but don't fail
-                print(f"Warning: Template variable '{var_name}' not found in data")
-                return f"[{var_name}]"  # Placeholder for missing variables
-        
-        return self.variable_pattern.sub(replace_variable, template_content)
-    
-    def validate_template_variables(self, template_content: str, data_dict: Dict[str, Any]) -> List[str]:
-        """Validate that all template variables have corresponding data.
-        
-        Args:
-            template_content: Template content to validate
-            data_dict: Available data dictionary
-            
-        Returns:
-            List of validation errors
-        """
-        errors = []
-        
-        # Find all variable references
-        variables = self.variable_pattern.findall(template_content)
-        
-        for var in variables:
-            var_name = var.strip()
-            if var_name not in data_dict:
-                errors.append(f"Missing data for template variable: {var_name}")
-        
-        # Find all loop references
-        loops = self.loop_pattern.findall(template_content)
-        for item_var, collection_var, loop_body in loops:
-            if collection_var not in data_dict:
-                errors.append(f"Missing data for loop collection: {collection_var}")
-            elif not isinstance(data_dict[collection_var], list):
-                errors.append(f"Loop collection '{collection_var}' is not a list")
-        
-        # Find all conditional references
-        conditionals = self.conditional_pattern.findall(template_content)
-        for condition_var, conditional_body in conditionals:
-            if condition_var not in data_dict:
-                errors.append(f"Missing data for conditional: {condition_var}")
-        
-        return errors
+        return result
+
 
 
 class TemplateManager:
@@ -281,7 +205,7 @@ class TemplateManager:
             template_directory: Path to directory containing LaTeX templates
         """
         self.template_directory = Path(template_directory)
-        self.dynamic_engine = DynamicTemplateEngine()
+        self.template_engine = SimpleTemplateEngine()
         self._ensure_template_directory()
     
     def _ensure_template_directory(self) -> None:
@@ -400,7 +324,7 @@ class TemplateManager:
         return self.get_template_path(template_name).exists()
     
     def render_resume(self, template_name: str, resume_data: ResumeData) -> str:
-        """Render resume using dynamic template engine.
+        """Render resume using simple template engine.
         
         Args:
             template_name: Name of template to use
@@ -414,18 +338,4 @@ class TemplateManager:
             TemplateValidationError: If rendering fails
         """
         template_content = self.load_template(template_name)
-        return self.dynamic_engine.render_template(template_content, resume_data)
-    
-    def validate_template_with_data(self, template_name: str, resume_data: ResumeData) -> List[str]:
-        """Validate template against resume data.
-        
-        Args:
-            template_name: Name of template to validate
-            resume_data: Resume data to validate against
-            
-        Returns:
-            List of validation errors
-        """
-        template_content = self.load_template(template_name)
-        data_dict = self.dynamic_engine._prepare_template_data(resume_data)
-        return self.dynamic_engine.validate_template_variables(template_content, data_dict)
+        return self.template_engine.render_template(template_content, resume_data)
