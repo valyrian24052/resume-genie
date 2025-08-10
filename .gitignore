@@ -11,3 +11,6 @@ logs/resume_genie.log
 logs/test.log
 logs/web_requests.log
 __init__.py
+output
+data
+data/resume.yaml
